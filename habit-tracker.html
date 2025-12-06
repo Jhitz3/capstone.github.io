@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Habit Tracker</title>
+    <link href="css1.css" rel="stylesheet" />
+</head>
+
+<body>
+
+<!--nav bar-->
+<div id="rectangle1">
+    <nav>
+        <ul>
+            <div id="rectangle2"><li><a href="login.html">Account</a></li></div>
+            <div id="rectangle2"><li><a href="habit-tracker.html">Habit Tracker</a></li></div>
+            <div id="rectangle2"><li><a href="index.html">My Pet</a></li></div>
+        </ul>
+
+        <!--hamburger menu-->
+        <button id="menuToggle" aria-controls="topMenu" aria-expanded="false" aria-label="Open menu" class="menu-toggle">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+
+        <div id="topMenu" class="top-menu">
+            <div class="top-menu-user">Not signed in</div>
+            <a id="loginLinkBtn" class="btn" href="login.html" style="display:inline-block;">Sign in</a>
+            <button id="logoutBtn" class="btn secondary">Logout</button>
+        </div>
+    </nav>
+</div>
+
+<!--page title-->
+<main class="container">
+    <div class="yellowbox">
+        <h1>Habit Tracker</h1>
+        <div class="user-bar" style="margin-top:0.5rem; text-align:center;">
+            <span class="muted">Logged in as <strong id="currentUserName">Guest</strong></span>
+        </div>
+        <br>
+    </div>
+
+    <!--habit container-->
+    <div class="purplebox mt-3">
+        <br>
+            <div class="habit-list-controls">
+                <input id="newHabitInput" class="habit-add-input" placeholder="Add a new habit (press Enter or Add)" />
+                <button id="addHabitBtn" class="btn">Add</button>
+            </div>
+        <br>
+            <div id="habitList" class="habit-list">
+                <div class="periwinklebox habit-item">
+                    <h2>Habit Name</h2>
+                    <div class="actions">
+                        <input type="checkbox" />
+                        <button class="edit-btn">Edit</button>
+                        <button class="delete-btn">Delete</button>
+                    </div>
+                </div>
+            </div>
+        <br>
+    </div>
+</main>
+
+<script src="habit-trackerjs.js"></script>
+
+</body>
+
+</html>

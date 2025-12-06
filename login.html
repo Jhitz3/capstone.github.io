@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Account</title>
+    <link href="css1.css" rel="stylesheet" />
+</head>
+
+<body>
+
+<!--nav bar-->
+<div id="rectangle1">
+  <nav>
+    <ul>
+      <div id="rectangle2"><li><a href="login.html">Account</a></li></div>
+      <div id="rectangle2"><li><a href="habit-tracker.html">Habit Tracker</a></li></div>
+      <div id="rectangle2"><li><a href="index.html">My Pet</a></li></div>
+    </ul>
+
+    <!--hamburger menu-->
+    <button id="menuToggle" aria-controls="topMenu" aria-expanded="false" aria-label="Open menu" class="menu-toggle">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+
+    <div id="topMenu" class="top-menu">
+      <div class="top-menu-user">Not signed in</div>
+      <a id="loginLinkBtn" class="btn" href="login.html" style="display:inline-block;">Sign in</a>
+      <button id="logoutBtn" class="btn secondary">Logout</button>
+    </div>
+  </nav>
+</div>
+
+<!--page title-->
+<main class="container">
+    <div class="yellowbox">
+        <h1>Account</h1>
+    </div>
+
+<!--login form-->
+<div class="purplebox mt-3 auth-box">
+    <div class="card">
+        <h2 class="text-center">Sign in</h2>
+            <form id="loginForm">
+                <input id="login-username" type="text" placeholder="Username" required />
+                <br>
+                <input id="login-password" type="password" placeholder="Password" required />
+                <button class="btn" type="submit">Sign in</button>
+            </form>
+</div>
+
+  <!--account register form-->
+  <div class="card mt-3">
+      <h2 class="text-center">Create account</h2>
+          <form id="registerForm">
+              <input id="reg-username" type="text" placeholder="Username" required />
+              <br>
+              <input id="reg-password" type="password" placeholder="Password" required />
+              <button class="btn" type="submit">Register</button>
+          </form>
+  </div>
+
+  <!--note-->
+  <p class="muted mt-3">Note: Accounts are stored locally in your browser using <code>localStorage</code>, not on a server.</p>
+</div>
+
+</main>
+
+<script src="loginjs.js"></script>
+
+</body>
+
+</html>
