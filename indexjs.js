@@ -183,6 +183,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+//pet selection
+document.querySelectorAll(".petChoice").forEach(img => {
+    img.addEventListener("click", () => {
+        const selectedPet = img.dataset.pet;
+        document.getElementById("petImage").src = selectedPet;
+        localStorage.setItem("selectedPet", selectedPet);
+    });
+});
+
+const savedPet = localStorage.getItem("selectedPet");
+if (savedPet) {
+    document.getElementById("petImage").src = savedPet;
+}
+
 //debug panel
 (function initDebugTools() {
     const panel = document.getElementById("debugPanel");
