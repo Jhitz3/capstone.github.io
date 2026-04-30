@@ -41,6 +41,8 @@
     });
 })();
 
+let currentPet = localStorage.getItem("selectedPet") || "black";
+
 function getPet() {
     return localStorage.getItem("selectedPet") || "black";
 }
@@ -127,7 +129,7 @@ function runEatingAnimation() {
     const pet = document.getElementById("petContainer");
     const petImg = document.getElementById("petImage");
 
-    const base = localStorage.getItem("selectedPet") || "black";
+    const base = currentPet || "black";
 
     pet.classList.remove("eat-animation");
     void pet.offsetWidth;
@@ -191,12 +193,12 @@ function startIdleLoop() {
     let state = "idle";
 
     function getBase() {
-        const pet = localStorage.getItem("selectedPet");
+        const pet = currentPet;
         return pet || "black";
     }
 
     function setSprite(type) {
-        const base = getPet();
+        currentPet
         const img = document.getElementById("petImage");
 
         if (!img || !base) return;
@@ -250,8 +252,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             console.log("CLICKED:", selectedPet);
 
-            localStorage.setItem("selectedPet", selectedPet);
-
+            currentPet = selectedPet;
+            
             const petImg = document.getElementById("petImage");
             if (petImg) {
                 petImg.src = `${selectedPet}_idle.png`;
