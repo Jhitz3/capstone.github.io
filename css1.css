@@ -188,9 +188,6 @@ h3 {                                           /*subtitles*/
 .petChoice:hover {
     transform: scale(1.1);
 }
-.petChoice:selected {
-    border: 3px solid #6c63ff;
-}
 .petChoicesContainer {
     display: flex;
     justify-content: center;
@@ -309,6 +306,34 @@ h3 {                                           /*subtitles*/
     0% { opacity: 0; transform: translateY(0) scale(0.8); }
     30% { opacity: 1; }
     100% { opacity: 0; transform: translateY(-25px) scale(1.1); }
+}
+.sleep-z {
+    opacity: 0;
+    display: none;
+    position: absolute;
+    top: 0px;
+    right: 40%;
+    font-size: 18px;
+    pointer-events: none;
+}
+.sleep-z.show {
+    display: block;
+    opacity: 1;
+    animation: floatZ 2s infinite;
+}
+@keyframes floatZ {
+    0% {
+        transform: translateY(0) scale(0.9);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(-5px) scale(1);
+    }
+    100% {
+        transform: translateY(-30px) scale(1.2);
+        opacity: 0;
+    }
 }
 /*--end pet animations--*/
 

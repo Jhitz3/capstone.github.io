@@ -41,6 +41,10 @@
     });
 })();
 
+function getPet() {
+    return localStorage.getItem("selectedPet") || "black";
+}
+
 //points
 function getUserPoints(user) {
     return parseInt(localStorage.getItem(`points_v1:${user}`) || "0", 10);
@@ -98,8 +102,12 @@ function deductUserPoints(user, amt) {
 
 
 //pet animations
-const petContainer = document.getElementById("petContainer");
-petContainer.classList.add("idle-animation");
+document.addEventListener("DOMContentLoaded", () => {
+    const petContainer = document.getElementById("petContainer");
+    if (petContainer) {
+        petContainer.classList.add("idle-animation");
+    }
+});
 
 function runPetAnimation(className) {
     petContainer.classList.remove("idle-animation", "sleep-animation");
@@ -117,42 +125,36 @@ petContainer.addEventListener("animationend", () => {
 
 function runEatingAnimation() {
     const pet = document.getElementById("petContainer");
+    const petImg = document.getElementById("petImage");
+
+    const base = localStorage.getItem("selectedPet") || "black";
+
     pet.classList.remove("eat-animation");
     void pet.offsetWidth;
     pet.classList.add("eat-animation");
-    const bowl = document.createElement("div");
-    bowl.className = "eat-bowl";
-    bowl.textContent = "🍲";
-    pet.appendChild(bowl);
-    setTimeout(() => bowl.remove(), 1000);
 
-    for (let i = 0; i < 2; i++) {
-        const nom = document.createElement("div");
-        nom.className = "eat-noms";
-        nom.textContent = "nom";
-        const baseY = 60;              
-        const randomYOffset = Math.random() * 25;
-        nom.style.top = (baseY + randomYOffset) + "px";
-        const baseX = 70;
-        const spread = 70;             
-        const randomXOffset = Math.random() * 20;
-        nom.style.left = (baseX + i * spread + randomXOffset) + "px";
-        pet.appendChild(nom);
-        setTimeout(() => nom.remove(), 900 + i);
-    }
+    let frame = 0;
+
+    const interval = setInterval(() => {    
+        petImg.src = (frame % 2 === 0)
+            ? `${base}_eat.png`
+            : `${base}_idle.png`;
+
+        frame++;
+
+        if (frame >= 5) {
+            clearInterval(interval);
+            petImg.src = `${base}_idle.png`;
+        }
+    }, 150);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    startIdleLoop();
+
     const petContainer = document.getElementById("petContainer");
     if (!petContainer) return; 
     petContainer.classList.add("idle-animation");
-
-    function runPetAnimation(className) {
-        petContainer.classList.remove("idle-animation", "sleep-animation");
-        petContainer.classList.remove("feed-animation", "play-animation", "groom-animation");
-        void petContainer.offsetWidth;
-        petContainer.classList.add(className);
-    }
 
     petContainer.addEventListener("animationend", () => {
         petContainer.classList.remove("feed-animation", "play-animation", "groom-animation");
@@ -180,22 +182,83 @@ document.addEventListener("DOMContentLoaded", () => {
     petContainer.addEventListener("click", (event) => {
         spawnHeart(event.clientX, event.clientY);
     });
-
 });
+
+//idle loop
+function startIdleLoop() {
+    const petImg = document.getElementById("petImage");
+
+    let state = "idle";
+
+    function getBase() {
+        const pet = localStorage.getItem("selectedPet");
+        return pet || "black";
+    }
+
+    function setSprite(type) {
+        const base = getPet();
+        const img = document.getElementById("petImage");
+
+        if (!img || !base) return;
+
+        img.src = `${base}_${type}.png`;
+    }
+
+    setInterval(() => {
+        if (state === "sleep" || state === "sad") return;
+
+        const rand = Math.random();
+
+    if (rand < 0.10) {
+        state = "sleep";
+        setSprite("sleep");
+
+        document.getElementById("sleepZ").classList.add("show");
+
+        setTimeout(() => {
+            state = "idle";
+            setSprite("idle");
+            document.getElementById("sleepZ").classList.remove("show");
+        }, 10000);
+
+        } else if (rand < 0.15) {
+            state = "sad";
+            setSprite("sad");
+
+            setTimeout(() => {
+                state = "idle";
+                setSprite("idle");
+            }, 4000);
+
+        } else {
+            state = "idle";
+            setSprite("idle");
+        }
+
+    }, 4000);
+}
 
 //pet selection
-document.querySelectorAll(".petChoice").forEach(img => {
-    img.addEventListener("click", () => {
-        const selectedPet = img.dataset.pet;
-        document.getElementById("petImage").src = selectedPet;
-        localStorage.setItem("selectedPet", selectedPet);
+document.addEventListener("DOMContentLoaded", () => {
+    const petChoices = document.querySelectorAll(".petChoice");
+
+    console.log("PET CHOICES FOUND:", petChoices.length);
+
+    petChoices.forEach(img => {
+        img.addEventListener("click", () => {
+            const selectedPet = img.dataset.pet;
+
+            console.log("CLICKED:", selectedPet);
+
+            localStorage.setItem("selectedPet", selectedPet);
+
+            const petImg = document.getElementById("petImage");
+            if (petImg) {
+                petImg.src = `${selectedPet}_idle.png`;
+            }
+        });
     });
 });
-
-const savedPet = localStorage.getItem("selectedPet");
-if (savedPet) {
-    document.getElementById("petImage").src = savedPet;
-}
 
 //debug panel
 (function initDebugTools() {
@@ -238,4 +301,5 @@ if (savedPet) {
             }
         });
     }
-})();
+})(); 
+
