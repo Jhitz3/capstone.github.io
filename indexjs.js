@@ -112,18 +112,19 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function runPetAnimation(className) {
-    petContainer.classList.remove("idle-animation", "sleep-animation");
-    petContainer.classList.remove("feed-animation", "play-animation", "groom-animation");
+    const petContainer = document.getElementById("petContainer");
+
+    petContainer.classList.remove(
+        "idle-animation",
+        "sleep-animation",
+        "feed-animation",
+        "play-animation",
+        "groom-animation"
+    );
+
     void petContainer.offsetWidth;
     petContainer.classList.add(className);
 }
-
-petContainer.addEventListener("animationend", () => {
-    petContainer.classList.remove("feed-animation", "play-animation", "groom-animation");
-    if (!petContainer.classList.contains("sleep-animation")) {
-        petContainer.classList.add("idle-animation");
-    }
-});
 
 function runEatingAnimation() {
     const pet = document.getElementById("petContainer");
@@ -158,10 +159,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!petContainer) return; 
     petContainer.classList.add("idle-animation");
 
-    petContainer.addEventListener("animationend", () => {
-        petContainer.classList.remove("feed-animation", "play-animation", "groom-animation");
+    petContainer.addEventListener("animationend", (e) => {
+        if (
+            e.animationName.includes("feed") ||
+            e.animationName.includes("play") ||
+            e.animationName.includes("groom")
+        ) {
+            petContainer.classList.remove("feed-animation", "play-animation", "groom-animation");
 
-        if (!petContainer.classList.contains("sleep-animation")) {
+            petContainer.classList.remove("idle-animation");
+            void petContainer.offsetWidth;
             petContainer.classList.add("idle-animation");
         }
     });
@@ -193,15 +200,14 @@ function startIdleLoop() {
     let state = "idle";
 
     function getBase() {
-        const pet = currentPet;
-        return pet || "black";
+        return localStorage.getItem("selectedPet") || "black";
     }
 
     function setSprite(type) {
-        currentPet
         const img = document.getElementById("petImage");
+        const base = getBase();
 
-        if (!img || !base) return;
+        if (!img) return;
 
         img.src = `${base}_${type}.png`;
     }
@@ -253,6 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("CLICKED:", selectedPet);
 
             currentPet = selectedPet;
+            localStorage.setItem("selectedPet", selectedPet);
             
             const petImg = document.getElementById("petImage");
             if (petImg) {
@@ -260,6 +267,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+    const petImg = document.getElementById("petImage");
+    const saved = localStorage.getItem("selectedPet") || "black";
+    petImg.src = `${saved}_idle.png`;   
 });
 
 //debug panel
